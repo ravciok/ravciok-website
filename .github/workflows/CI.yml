@@ -1,0 +1,37 @@
+name: Build and Deploy
+on: [push]
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24.14'
+          cache: 'pnpm'
+
+      - name: install
+        run: pnpm i --frozen-lockfile
+
+      - name: build
+        run: pnpm build
+        env:
+          BASE_PATH: /ravciok-website/
+          GITHUB_USERNAME: ${{ secrets.GH_USERNAME }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: create .nojekyll
+        run: touch .output/public/.nojekyll
+
+      - name: deploy pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: .output/public
