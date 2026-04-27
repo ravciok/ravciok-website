@@ -1,0 +1,23 @@
+node_modules
+.output
+.vinxi
+.vercel
+.netlify
+dist
+.env
+.env.local
+.env.*.local
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea
+
+# logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+tasks
