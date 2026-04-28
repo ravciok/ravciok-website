@@ -1,6 +1,6 @@
 {
-  "_ThemeToggle-Vw1yWc0u.js": {
-    "file": "assets/ThemeToggle-Vw1yWc0u.js",
+  "_ThemeToggle-DxyW8EQv.js": {
+    "file": "assets/ThemeToggle-DxyW8EQv.js",
     "name": "ThemeToggle",
     "imports": [
       "_server-runtime-DQj6-HE3.js"
@@ -11,29 +11,29 @@
     "name": "server-runtime"
   },
   "src/routes/blog/[slug].tsx?pick=default&pick=$css": {
-    "file": "assets/_slug_-Bz0zX_Dy.js",
+    "file": "assets/_slug_-Cbxf4xfW.js",
     "name": "_slug_",
     "src": "src/routes/blog/[slug].tsx?pick=default&pick=$css",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
       "_server-runtime-DQj6-HE3.js",
-      "_ThemeToggle-Vw1yWc0u.js"
+      "_ThemeToggle-DxyW8EQv.js"
     ]
   },
   "src/routes/index.tsx?pick=default&pick=$css": {
-    "file": "assets/index-BKNSXZhD.js",
+    "file": "assets/index-C3GNc23a.js",
     "name": "index",
     "src": "src/routes/index.tsx?pick=default&pick=$css",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
       "_server-runtime-DQj6-HE3.js",
-      "_ThemeToggle-Vw1yWc0u.js"
+      "_ThemeToggle-DxyW8EQv.js"
     ]
   },
   "virtual:$vinxi/handler/client": {
-    "file": "assets/client-Dw9R4xuh.js",
+    "file": "assets/client-1tXSCyas.js",
     "name": "client",
     "src": "virtual:$vinxi/handler/client",
     "isEntry": true,
@@ -45,7 +45,7 @@
       "src/routes/index.tsx?pick=default&pick=$css"
     ],
     "css": [
-      "assets/client-BUFWaxu7.css"
+      "assets/client-s3xAxMZ4.css"
     ]
   }
 }
