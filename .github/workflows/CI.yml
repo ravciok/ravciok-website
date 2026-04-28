@@ -26,6 +26,7 @@ jobs:
           BASE_PATH: /ravciok-website/
           GITHUB_USERNAME: ${{ secrets.GH_USERNAME }}
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GOOGLE_TAG: ${{ secrets.G_TAG }}
 
       - name: create .nojekyll
         run: touch .output/public/.nojekyll

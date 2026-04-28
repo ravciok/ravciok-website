@@ -5,7 +5,7 @@ import { Suspense } from "solid-js";
 import "./app.css";
 
 export default function App() {
-  return (
+    return (
     <Router
       explicitLinks
       root={(props) => (
@@ -15,7 +15,7 @@ export default function App() {
         </MetaProvider>
       )}
     >
-      <FileRoutes />
+        <FileRoutes />
     </Router>
   );
 }
