@@ -2,7 +2,7 @@ import { createSignal, onMount } from "solid-js";
 
 const STORAGE_KEY = "theme";
 const LIGHT = "light";
-const DARK = "dark";
+const DARK = "night";
 
 type Theme = typeof LIGHT | typeof DARK;
 

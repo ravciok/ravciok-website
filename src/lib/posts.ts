@@ -31,7 +31,7 @@ let highlighterPromise: Promise<HighlighterGeneric<BundledLanguage, BundledTheme
 function getHighlighter() {
   if (!highlighterPromise) {
     highlighterPromise = createHighlighter({
-      themes: ["github-light", "github-dark"],
+      themes: ["catppuccin-latte", "catppuccin-frappe"],
       langs: HIGHLIGHT_LANGS,
     });
   }
@@ -58,7 +58,7 @@ async function highlightCode(text: string, lang: string): Promise<string> {
   const h = await getHighlighter();
   return h.codeToHtml(text, {
     lang: supported,
-    themes: { light: "github-light", dark: "github-dark" },
+    themes: { light: "catppuccin-latte", dark: "catppuccin-frappe" },
   });
 }
 
