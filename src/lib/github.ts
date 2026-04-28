@@ -104,7 +104,7 @@ async function fetchProfileReadmeHtml(
 }
 
 export async function loadGitHub(): Promise<GitHubData> {
-  const username = process.env.GITHUB_USERNAME;
+  const username = process.env.PROFILE;
   if (!username) return mockGitHubData;
 
   const headers: Record<string, string> = {
