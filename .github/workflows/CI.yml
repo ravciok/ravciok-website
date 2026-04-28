@@ -2,6 +2,7 @@ name: Build and Deploy
 on: [push]
 permissions:
   contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,8 +24,8 @@ jobs:
       - name: build
         run: pnpm build
         env:
-          BASE_PATH: /ravciok-website/
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BASE_PATH: ${{ vars.BASE_PATH }}
           PROFILE: ${{ vars.PROFILE }}
           GOOGLE_TAG: ${{ vars.GOOGLE_TAG }}
 
