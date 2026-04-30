@@ -13,6 +13,7 @@ export default createHandler(() => (
         <head>
           <script async src={GTAG_SOURCE} />
           <script innerHTML={GTAG_SCRIPT} />
+          <script defer src="https://cloud.umami.is/script.js" data-website-id={process.env.UMAMI_ID}></script>
 
           <meta charset="utf-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
