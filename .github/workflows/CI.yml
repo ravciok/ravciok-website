@@ -28,6 +28,10 @@ jobs:
           BASE_PATH: ${{ vars.BASE_PATH }}
           PROFILE: ${{ vars.PROFILE }}
           GOOGLE_TAG: ${{ vars.GOOGLE_TAG }}
+          GISCUS_REPO: ${{ vars.GISCUS_REPO }}
+          GISCUS_REPO_ID: ${{ vars.GISCUS_REPO_ID }}
+          GISCUS_CATEGORY: ${{ vars.GISCUS_CATEGORY }}
+          GISCUS_CATEGORY_ID: ${{ vars.GISCUS_CATEGORY_ID }}
 
       - name: create .nojekyll
         run: touch .output/public/.nojekyll
