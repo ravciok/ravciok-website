@@ -46,11 +46,12 @@ const blogRoutes = listPostSlugs().map((slug) => `/blog/${slug}`);
 export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
+    envPrefix: ["GISCUS_"],
   },
   server: {
     preset: "static",
     prerender: {
-      routes: ["/", ...blogRoutes],
+      routes: ["/", "/404.html", ...blogRoutes],
       crawlLinks: true,
       failOnError: true,
     },

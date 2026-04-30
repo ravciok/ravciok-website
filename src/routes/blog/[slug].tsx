@@ -3,6 +3,7 @@ import { createAsync, query, useParams } from "@solidjs/router";
 import { Title } from "@solidjs/meta";
 import { getPost } from "~/lib/posts";
 import { ThemeToggle } from "~/components/ThemeToggle";
+import { Comments } from "~/components/Comments";
 
 const getPostQuery = query(async (slug: string) => {
   "use server";
@@ -76,6 +77,9 @@ export default function BlogPost() {
                 </header>
                 <div innerHTML={p().html} />
               </article>
+              <section class="max-w-screen-md mx-auto px-4 my-12">
+                <Comments />
+              </section>
             </>
           )}
         </Show>
