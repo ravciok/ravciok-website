@@ -22,6 +22,7 @@ export const mockGitHubData: GitHubData = {
     {
       name: "ravciok-website",
       html_url: "https://github.com/ravciok/ravciok-website",
+      homepage: "https://ravciok.dev",
       description: "This site. SolidStart SSG + DaisyUI.",
       updated_at: "2026-04-27T12:00:00Z",
       pushed_at: "2026-04-27T12:00:00Z",
@@ -32,6 +33,7 @@ export const mockGitHubData: GitHubData = {
     {
       name: "ledger-cli",
       html_url: "https://github.com/ravciok/ledger-cli",
+      homepage: null,
       description: "Tiny CLI for tracking personal finances.",
       updated_at: "2026-03-21T10:00:00Z",
       pushed_at: "2026-03-22T10:00:00Z",
@@ -42,6 +44,7 @@ export const mockGitHubData: GitHubData = {
     {
       name: "static-snap",
       html_url: "https://github.com/ravciok/static-snap",
+      homepage: "https://static-snap.dev",
       description: "One-shot screenshot service for static pages.",
       updated_at: "2026-02-15T08:00:00Z",
       pushed_at: "2026-02-18T08:00:00Z",
@@ -52,6 +55,7 @@ export const mockGitHubData: GitHubData = {
     {
       name: "useless-utils",
       html_url: "https://github.com/ravciok/useless-utils",
+      homepage: null,
       description: "Tiny JS utilities I keep rewriting.",
       updated_at: "2025-12-09T08:00:00Z",
       pushed_at: "2025-12-12T08:00:00Z",
@@ -62,6 +66,7 @@ export const mockGitHubData: GitHubData = {
     {
       name: "weekend-experiments",
       html_url: "https://github.com/ravciok/weekend-experiments",
+      homepage: null,
       description: null,
       updated_at: "2025-08-20T08:00:00Z",
       pushed_at: "2025-08-25T08:00:00Z",

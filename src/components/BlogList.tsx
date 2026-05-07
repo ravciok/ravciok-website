@@ -14,8 +14,8 @@ function formatDate(iso: string) {
 
 export function BlogList(props: { posts: PostMeta[] }) {
   return (
-    <section class="my-8">
-      <h2 class="text-xl md:text-2xl font-bold mb-4">Recent posts</h2>
+    <section class="my-16">
+      <h2 class="text-xl md:text-2xl font-bold mb-4">Field notes</h2>
       <Show
         when={props.posts.length > 0}
         fallback={<p class="opacity-70">No posts yet.</p>}
@@ -25,23 +25,24 @@ export function BlogList(props: { posts: PostMeta[] }) {
             {(p) => (
               <a
                 href={`/blog/${p.slug}`}
-                class="card card-side bg-base-200 hover:bg-base-300 transition-colors w-full"
+                class="group card bg-secondary-content/30 ring-0 hover:ring-4 hover:ring-secondary/80 transition-all"
               >
                 <div class="card-body">
-                  <div class="flex flex-col md:flex-row md:items-baseline md:justify-between gap-1">
-                    <h3 class="card-title text-lg md:text-xl">{p.title}</h3>
+                  <div class="text-xs opacity-70 flex items-center gap-2">
                     <Show when={p.date}>
-                      <time class="text-xs font-mono opacity-70 shrink-0" datetime={p.date}>
-                        {formatDate(p.date)}
-                      </time>
+                      <time datetime={p.date}>{formatDate(p.date)}</time>
+                    </Show>
+                    <Show when={p.date && p.readTime}>
+                      <span aria-hidden="true">·</span>
+                    </Show>
+                    <Show when={p.readTime}>
+                      <span>{p.readTime} min</span>
                     </Show>
                   </div>
+                  <h3 class="card-title text-lg break-words transition-colors group-hover:text-secondary/80">{p.title}</h3>
                   <Show when={p.excerpt}>
-                    <p class="text-sm md:text-base opacity-90 mt-1">{p.excerpt}</p>
+                    <p class="text-sm md:text-base opacity-90">{p.excerpt}</p>
                   </Show>
-                  <div class="card-actions mt-2">
-                    <span class="link link-primary text-sm">Read post →</span>
-                  </div>
                 </div>
               </a>
             )}

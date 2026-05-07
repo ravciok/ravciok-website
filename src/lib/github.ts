@@ -13,6 +13,7 @@ const PINNED_QUERY = /* GraphQL */ `
           ... on Repository {
             name
             url
+            homepageUrl
             description
             updatedAt
             pushedAt
@@ -29,6 +30,7 @@ const PINNED_QUERY = /* GraphQL */ `
 interface PinnedNode {
   name: string;
   url: string;
+  homepageUrl: string | null;
   description: string | null;
   updatedAt: string;
   pushedAt: string;
@@ -41,6 +43,7 @@ function pinnedToRepo(n: PinnedNode): GitHubRepo {
   return {
     name: n.name,
     html_url: n.url,
+    homepage: n.homepageUrl && n.homepageUrl.length > 0 ? n.homepageUrl : null,
     description: n.description,
     updated_at: n.updatedAt,
     pushed_at: n.pushedAt,

@@ -12,7 +12,7 @@ type GiscusTheme = "catppuccin_latte" | "catppuccin_frappe";
 
 function readTheme(): GiscusTheme {
   if (typeof document === "undefined") return "catppuccin_frappe";
-  return document.documentElement.getAttribute("data-theme") === "night" ? "catppuccin_frappe" : "catppuccin_latte";
+  return document.documentElement.getAttribute("data-theme") === "dracula" ? "catppuccin_frappe" : "catppuccin_latte";
 
 }
 

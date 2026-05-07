@@ -34,7 +34,7 @@ const POSTS_DIR = join(process.cwd(), "src/content/posts");
 function listPostSlugs(): string[] {
   try {
     return readdirSync(POSTS_DIR)
-      .filter((f) => f.endsWith(".md"))
+      .filter((f) => f.endsWith(".md") && !f.startsWith("_"))
       .map((f) => f.replace(/\.md$/, ""));
   } catch {
     return [];

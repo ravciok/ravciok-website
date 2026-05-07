@@ -1,7 +1,7 @@
 // @refresh reload
 import { createHandler, StartServer } from "@solidjs/start/server";
 
-const ANTI_FLASH = `(function(){try{var t=localStorage.getItem('theme');if(t!=='light'&&t!=='night')t=matchMedia('(prefers-color-scheme: dark)').matches?'night':'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();`;
+const ANTI_FLASH = `(function(){try{var t=localStorage.getItem('theme');if(t!=='winter'&&t!=='dracula')t=matchMedia('(prefers-color-scheme: dark)').matches?'dracula':'winter';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();`;
 
 export default createHandler(() => (
   <StartServer
@@ -15,7 +15,8 @@ export default createHandler(() => (
           <meta name="description" content="Personal site." />
           <link
             rel="icon"
-            href="data:image/svg+xml,%3Csvg xmlns='https://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='28'%3E~%3C/text%3E%3C/svg%3E"
+            type="image/svg+xml"
+            href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23570df8'/%3E%3Ctext x='50%25' y='24' text-anchor='middle' font-family='system-ui,sans-serif' font-size='24' font-weight='700' fill='white'%3Er%3C/text%3E%3C/svg%3E"
           />
 
           <script innerHTML={ANTI_FLASH} />
