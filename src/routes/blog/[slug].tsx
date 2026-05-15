@@ -49,8 +49,11 @@ export default function BlogPost() {
               <TableOfContents toc={p().toc} />
               <article class="prose prose-sm md:prose-base lg:prose-lg py-8 md:py-12">
                 <header class="mb-12 not-prose">
-                  <a href="/" class="btn btn-ghost mb-12">
-                    ← Back to home
+                  <a href="/" class="btn btn-ghost btn-lg md:btn-md mb-12">
+                    <svg viewBox="0 0 24 24" class="h-5 w-5 md:h-4 md:w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
+                    Back to home
                   </a>
                   <h1 class="text-blog-title font-bold mb-3 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                     {p().title}
