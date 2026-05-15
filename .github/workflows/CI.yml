@@ -32,6 +32,7 @@ jobs:
           GISCUS_CATEGORY: ${{ vars.GISCUS_CATEGORY }}
           GISCUS_CATEGORY_ID: ${{ vars.GISCUS_CATEGORY_ID }}
           UMAMI_ID: ${{ vars.UMAMI_ID }}
+          PROD: ${{ vars.PROD }}
 
       - name: create .nojekyll
         run: touch .output/public/.nojekyll
