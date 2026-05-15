@@ -50,18 +50,29 @@ function ProviderIcon(props: { provider: string }) {
   );
 }
 
+function sized(rawUrl: string, size: number): string {
+  const url = new URL(rawUrl);
+  url.searchParams.set("s", String(size));
+  return url.toString();
+}
+
 export function ProfileHeader(props: { user: GitHubUser; socialAccounts: SocialAccount[] }) {
   const u = () => props.user;
+  const url = u().avatar_url
+
   return (
     <section class="my-8">
       <div class="flex flex-col md:flex-row gap-6 items-start text-left">
         <div class="avatar shrink-0">
           <div class="w-24 md:w-32 rounded-full">
             <img
-              src={u().avatar_url}
+              src={sized(url,256)}
+              srcset={`${sized(url,128)} 1x, ${sized(url,256)} 2x`}
               alt={`${u().name} avatar`}
               width="128"
               height="128"
+              fetchpriority="high"
+              decoding="async"
             />
           </div>
         </div>
@@ -80,13 +91,13 @@ export function ProfileHeader(props: { user: GitHubUser; socialAccounts: SocialA
           </Show>
 
           <div class="flex flex-wrap gap-x-4 gap-y-1">
-            <a class="btn btn-circle btn-soft btn-secondary" href={u().html_url}>
+            <a class="btn btn-circle btn-soft btn-secondary" href={u().html_url} aria-label="github">
               <GitHubIcon />
             </a>
 
             <For each={props.socialAccounts}>
               {(s) => (
-                <a class="btn btn-circle btn-soft btn-secondary" href={s.url}>
+                <a class="btn btn-circle btn-soft btn-secondary" href={s.url} aria-label={s.provider}>
                   <ProviderIcon provider={s.provider} />
                 </a>
               )}
@@ -96,7 +107,7 @@ export function ProfileHeader(props: { user: GitHubUser; socialAccounts: SocialA
               <a
                   class="btn btn-circle btn-soft btn-secondary"
                   href={`mailto:${u().email}`}
-                  aria-label="Email"
+                  aria-label="email"
               >
                 <EmailIcon />
               </a>
