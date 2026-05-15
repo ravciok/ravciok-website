@@ -38,11 +38,11 @@ function buildCsp(scriptHashes: string[]): string {
   const hashList = scriptHashes.map(h => `'sha256-${h}'`).join(" ");
   return [
     `default-src 'self'`,
-    `script-src 'self' ${hashList} 'unsafe-eval' https://cloud.umami.is`,
+    `script-src 'self' ${hashList} https://cloud.umami.is`,
     `style-src 'self' 'unsafe-inline'`,
     `img-src 'self' data: https://*.githubusercontent.com`,
     `font-src 'self' data:`,
-    `connect-src 'self' https://cloud.umami.is`,
+    `connect-src 'self' https://cloud.umami.is https://api-gateway.umami.dev`,
     `frame-src https://giscus.app`,
     `frame-ancestors 'none'`,
     `form-action 'self'`,

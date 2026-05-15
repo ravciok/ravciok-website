@@ -2,16 +2,25 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "ravciok-website",
   "compatibility_date": "2026-05-15",
-  "compatibility_flags": ["nodejs_compat"],
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
   "observability": {
     "enabled": true,
-    "logs": {
-      "enabled": true
-    },
     "traces": {
       "enabled": true
     }
   },
+  "routes": [
+    {
+      "pattern": "ravciok.dev",
+      "custom_domain": true,
+      "enabled": true,
+      "previews_enabled": false
+    }
+  ],
+  "preview_urls": false,
+  "workers_dev": false,
   "assets": {
     "binding": "ASSETS",
     "directory": ".output/public",
@@ -19,3 +28,4 @@
     "html_handling": "auto-trailing-slash"
   }
 }
+

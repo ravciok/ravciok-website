@@ -16,6 +16,7 @@ function listPostSlugs(): string[] {
 const blogRoutes = listPostSlugs().map((slug) => `/blog/${slug}`);
 
 export default defineConfig({
+  serialization: { mode: "json" },
   vite: {
     plugins: [tailwindcss()],
     envPrefix: ["GISCUS_"],
