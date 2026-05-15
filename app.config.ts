@@ -22,11 +22,14 @@ export default defineConfig({
     envPrefix: ["GISCUS_"],
   },
   server: {
-    preset: "static",
+    preset: "cloudflare_module",
+
     prerender: {
       routes: ["/", "/404.html", ...blogRoutes],
       crawlLinks: true,
       failOnError: true,
     },
+
+    compatibilityDate: "2026-05-15"
   },
 });
