@@ -16,20 +16,17 @@ function listPostSlugs(): string[] {
 const blogRoutes = listPostSlugs().map((slug) => `/blog/${slug}`);
 
 export default defineConfig({
-  middleware: "src/middleware.ts",
   vite: {
     plugins: [tailwindcss()],
     envPrefix: ["GISCUS_"],
   },
   server: {
     preset: "cloudflare_module",
-
     prerender: {
       routes: ["/", "/404.html", ...blogRoutes],
       crawlLinks: true,
       failOnError: true,
     },
-
     compatibilityDate: "2026-05-15"
   },
 });

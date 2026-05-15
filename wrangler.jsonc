@@ -1,16 +1,11 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
+  "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "ravciok-website",
   "compatibility_date": "2026-05-15",
-  "observability": {
-    "enabled": true
-  },
-  "main": "./.output/server/index.mjs",
+  "compatibility_flags": ["nodejs_compat"],
   "assets": {
-    "binding": "ASSETS",
-    "directory": "./.output/public"
-  },
-  "compatibility_flags": [
-    "nodejs_compat"
-  ]
+    "directory": ".output/public",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  }
 }
