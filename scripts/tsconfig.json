@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../.scripts-dist",
+    "noEmit": false,
+    "jsx": "preserve",
+    "types": ["node"]
+  },
+  "include": ["write-headers.ts"]
+}

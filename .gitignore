@@ -4,6 +4,7 @@ node_modules
 .vercel
 .netlify
 dist
+.scripts-dist
 .env
 .env.local
 .env.*.local

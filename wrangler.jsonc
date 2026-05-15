@@ -3,7 +3,17 @@
   "name": "ravciok-website",
   "compatibility_date": "2026-05-15",
   "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "enabled": true
+    },
+    "traces": {
+      "enabled": true
+    }
+  },
   "assets": {
+    "binding": "ASSETS",
     "directory": ".output/public",
     "not_found_handling": "404-page",
     "html_handling": "auto-trailing-slash"

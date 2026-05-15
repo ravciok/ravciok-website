@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "vinxi dev",
     "build": "vinxi build",
+    "postbuild": "tsc -p scripts && node .scripts-dist/write-headers.js",
     "start": "vinxi start",
     "version": "vinxi version",
     "typecheck": "tsc --noEmit",
