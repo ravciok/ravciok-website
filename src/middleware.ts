@@ -1,7 +1,7 @@
 import { createMiddleware } from "@solidjs/start/middleware";
 import { randomBytes } from "crypto";
 
-const isProd = import.meta.env.PROD;
+const isProd = process.env.PROD === 'true';
 
 export default createMiddleware({
   onRequest: event => {
