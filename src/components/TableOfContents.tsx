@@ -41,7 +41,7 @@ export function TableOfContents(props: { toc: TocEntry[] }) {
   return (
     <nav
       aria-label="Table of contents"
-      class="hidden xl:block fixed top-24 right-[max(0.5rem,calc(50vw-41rem))] w-56 max-h-[calc(100vh-8rem)] overflow-y-auto text-sm"
+      class="sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto text-sm"
     >
       <p class="font-semibold mb-2 opacity-80 uppercase tracking-wider text-xs">
         On this page

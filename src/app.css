@@ -93,16 +93,16 @@ html {
   border-bottom-color: rgb(255 255 255 / 0.1);
 }
 
-/* line numbers via CSS counter on shiki's emitted .line spans */
-.prose .code-block pre.shiki code {
+/* line numbers via CSS counter on shiki's emitted .line spans, skip diagrams (data-lang="text") */
+.prose .code-block:not([data-lang="text"]) pre.shiki code {
   counter-reset: line;
   display: block;
 }
-.prose .code-block pre.shiki .line {
+.prose .code-block:not([data-lang="text"]) pre.shiki .line {
   display: inline-block;
   width: 100%;
 }
-.prose .code-block pre.shiki .line::before {
+.prose .code-block:not([data-lang="text"]) pre.shiki .line::before {
   counter-increment: line;
   content: counter(line);
   display: inline-block;
@@ -114,7 +114,7 @@ html {
   user-select: none;
   -webkit-user-select: none;
 }
-.prose .code-block pre.shiki .line:last-child:empty::before {
+.prose .code-block:not([data-lang="text"]) pre.shiki .line:last-child:empty::before {
   content: none;
 }
 
@@ -125,5 +125,5 @@ html {
   .prose .code-block { margin-inline: -2.5rem; }
 }
 @media (min-width: 1280px) {
-  .prose .code-block { margin-inline: -3.5rem; }
+  .prose .code-block { margin-inline: -2.5rem; }
 }
