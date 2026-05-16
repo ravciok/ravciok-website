@@ -79,7 +79,7 @@ export function BackFab(props: { endSelector: string }) {
         aria-label={mode() === "back" ? "Back to home" : "Scroll to top"}
         onClick={handleClick}
         class={`btn btn-circle btn-lg shadow-[0_4px_10px_-2px_rgba(0,0,0,0.7)] transition-opacity duration-300 ease-out motion-reduce:transition-none ${
-          mode() === "back" ? "btn-secondary" : "btn-accent"
+          mode() === "back" ? "btn-primary" : "btn-accent"
         } ${
           visible() ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}

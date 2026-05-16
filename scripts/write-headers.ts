@@ -66,6 +66,12 @@ const headers = `/*
 
 /_build/assets/*
   cache-control: public, immutable, max-age=31536000
+
+/feed.xml
+  Content-Type: application/rss+xml; charset=utf-8
+
+/sitemap.xml
+  Content-Type: application/xml; charset=utf-8
 `;
 
 await writeFile(HEADERS_PATH, headers);

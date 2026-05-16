@@ -12,9 +12,10 @@ interface SitemapEntry {
   lastmod: string;
 }
 
-function toIsoDate(iso: string): string {
+function toDateOnly(iso: string): string {
   const d = new Date(iso);
-  return Number.isNaN(+d) ? new Date().toISOString() : d.toISOString();
+  const src = Number.isNaN(+d) ? new Date() : d;
+  return src.toISOString().slice(0, 10);
 }
 
 async function listPostEntries(): Promise<SitemapEntry[]> {
@@ -29,7 +30,7 @@ async function listPostEntries(): Promise<SitemapEntry[]> {
       const date = data.date instanceof Date ? data.date.toISOString() : String(data.date ?? "");
       return {
         loc: `${SITE_URL}/blog/${slug}`,
-        lastmod: toIsoDate(date),
+        lastmod: toDateOnly(date),
       } satisfies SitemapEntry;
     }),
   );
@@ -37,7 +38,7 @@ async function listPostEntries(): Promise<SitemapEntry[]> {
 }
 
 function buildSitemap(entries: SitemapEntry[]): string {
-  const home: SitemapEntry = { loc: SITE_URL, lastmod: new Date().toISOString() };
+  const home: SitemapEntry = { loc: SITE_URL, lastmod: toDateOnly(new Date().toISOString()) };
   const all = [home, ...entries];
   const urls = all
     .map(
