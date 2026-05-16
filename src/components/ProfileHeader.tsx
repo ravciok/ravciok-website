@@ -41,39 +41,37 @@ function sized(rawUrl: string, size: number): string {
 
 export function ProfileHeader(props: { user: GitHubUser; socialAccounts: SocialAccount[] }) {
   const u = () => props.user;
-  const url = u().avatar_url
+  const url = u().avatar_url;
 
   return (
     <section class="my-8">
-      <div class="flex flex-col md:flex-row gap-6 items-start text-left">
+      <div class="flex flex-col md:flex-row gap-6 items-center md:items-start text-center md:text-left">
         <div class="avatar shrink-0">
-          <div class="w-40 md:w-32 rounded-full">
+          <div class="w-28 md:w-32 rounded-full">
             <img
-              src={sized(url,320)}
-              srcset={`${sized(url,160)} 1x, ${sized(url,320)} 2x`}
+              src={sized(url,256)}
+              srcset={`${sized(url,128)} 1x, ${sized(url,256)} 2x`}
               alt={`${u().name} avatar`}
-              width="160"
-              height="160"
+              width="128"
+              height="128"
               fetchpriority="high"
               decoding="async"
             />
           </div>
         </div>
 
-        <div class="flex flex-col gap-3 items-start">
+        <div class="flex flex-col gap-5 items-center md:items-start">
           <div>
             <h1 class="text-3xl md:text-4xl font-bold leading-tight text-primary">
               {u().name}
             </h1>
 
-            <p class="tracking-widest opacity-70">@{u().login}</p>
+            <Show when={u().bio}>
+              <p class="text-lg md:text-xl max-w-prose">{u().bio}</p>
+            </Show>
           </div>
 
-          <Show when={u().bio}>
-            <p class="opacity-90 max-w-prose">{u().bio}</p>
-          </Show>
-
-          <div class="flex flex-wrap gap-x-4 gap-y-1">
+          <div class="flex flex-wrap gap-x-4 gap-y-1 justify-center md:justify-start">
             <a class="btn btn-circle btn-lg md:btn-md btn-soft btn-secondary" href={u().html_url} aria-label="github">
               <GitHubIcon />
             </a>
@@ -88,9 +86,9 @@ export function ProfileHeader(props: { user: GitHubUser; socialAccounts: SocialA
 
             <Show when={u().email}>
               <a
-                  class="btn btn-circle btn-lg md:btn-md btn-soft btn-secondary"
-                  href={`mailto:${u().email}`}
-                  aria-label="email"
+                class="btn btn-circle btn-lg md:btn-md btn-soft btn-secondary"
+                href={`mailto:${u().email}`}
+                aria-label="email"
               >
                 <EmailIcon />
               </a>

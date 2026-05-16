@@ -12,7 +12,7 @@ export default function App() {
       explicitLinks
       root={(props) => (
         <MetaProvider>
-          <Title>~/ravciok.dev</Title>
+          <Title>ravciok.dev</Title>
           <Navbar />
           <Suspense>{props.children}</Suspense>
           <Footer />

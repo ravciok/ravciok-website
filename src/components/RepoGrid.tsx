@@ -6,12 +6,12 @@ export function RepoGrid(props: { repos: GitHubRepo[]; limit?: number }) {
 
   return (
     <section class="my-16">
-      <h2 class="text-xl md:text-2xl font-bold mb-4">Playground</h2>
+      <h2 class="text-base md:text-lg font-semibold uppercase tracking-widest opacity-70 mb-4">Playground</h2>
       <Show when={items().length > 0} fallback={<p class="opacity-70">No repos to show.</p>}>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <For each={items()}>
             {(repo) => (
-              <div class="group card bg-secondary-content/30 ring-0 hover:ring-4 hover:ring-secondary/80 transition-all relative">
+              <div class="group card bg-secondary-content/30 ring-0 hover:ring-2 hover:ring-secondary/80 active:bg-secondary-content/50 transition-all relative">
                 <a
                   href={repo.html_url}
                   class="absolute inset-0 z-0 rounded-[inherit]"
@@ -33,7 +33,7 @@ export function RepoGrid(props: { repos: GitHubRepo[]; limit?: number }) {
                   </div>
 
                   <Show when={repo.description}>
-                    <p class="text-sm opacity-90 break-words">{repo.description}</p>
+                    <p class="text-sm opacity-80 break-words">{repo.description}</p>
                   </Show>
                   <div class="flex flex-wrap gap-2 mt-2">
                     <Show when={repo.language}>

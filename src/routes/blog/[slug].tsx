@@ -46,14 +46,14 @@ export default function BlogPost() {
         >
           {(p) => (
             <>
-              <Title>{p().title}</Title>
+              <Title>{p().title} · ravciok.dev</Title>
               <div class="min-w-0">
                 <article class="prose prose-sm md:prose-base lg:prose-lg max-w-none py-8 md:py-12">
                   <header id="post-header" class="mb-12 not-prose">
-                    <h1 class="text-blog-title font-bold mb-3 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                    <h1 class="text-3xl md:text-4xl lg:text-blog-title font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                       {p().title}
                     </h1>
-                    <div class="text-sm opacity-70 flex items-center gap-2">
+                    <div class="text-sm md:text-base opacity-70 flex items-center gap-2">
                       <Show when={p().date}>
                         <time datetime={p().date}>{formatDate(p().date)}</time>
                       </Show>
@@ -67,7 +67,7 @@ export default function BlogPost() {
                   </header>
                   <div innerHTML={p().html} />
                 </article>
-                <section id="post-end" class="my-12">
+                <section id="post-end" class="mt-4 mb-12">
                   <Comments />
                 </section>
               </div>

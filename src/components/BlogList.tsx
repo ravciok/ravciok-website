@@ -15,7 +15,7 @@ function formatDate(iso: string) {
 export function BlogList(props: { posts: PostMeta[] }) {
   return (
     <section class="my-16">
-      <h2 class="text-xl md:text-2xl font-bold mb-4">Field notes</h2>
+      <h2 class="text-base md:text-lg font-semibold uppercase tracking-widest opacity-70 mb-4">Field notes</h2>
       <Show
         when={props.posts.length > 0}
         fallback={<p class="opacity-70">No posts yet.</p>}
@@ -25,7 +25,7 @@ export function BlogList(props: { posts: PostMeta[] }) {
             {(p) => (
               <a
                 href={`/blog/${p.slug}`}
-                class="group card bg-secondary-content/30 ring-0 hover:ring-4 hover:ring-secondary/80 transition-all"
+                class="group card bg-secondary-content/30 ring-0 hover:ring-2 hover:ring-secondary/80 active:bg-secondary-content/50 transition-all"
               >
                 <div class="card-body">
                   <div class="text-xs opacity-70 flex items-center gap-2">
@@ -41,7 +41,7 @@ export function BlogList(props: { posts: PostMeta[] }) {
                   </div>
                   <h3 class="card-title text-lg break-words transition-colors group-hover:text-secondary/80">{p.title}</h3>
                   <Show when={p.excerpt}>
-                    <p class="text-sm md:text-base opacity-90">{p.excerpt}</p>
+                    <p class="text-sm md:text-base opacity-80">{p.excerpt}</p>
                   </Show>
                 </div>
               </a>

@@ -38,7 +38,7 @@ html {
   text-decoration: var(--shiki-dark-text-decoration) !important;
 }
 
-/* prose code blocks: language badge + line numbers + breakout + depth */
+/* prose code blocks: container styling + language badge + file badge */
 .prose .code-block {
   position: relative;
   margin: 1.25em 0;
@@ -122,8 +122,5 @@ html {
   .prose .code-block { margin-inline: -1rem; }
 }
 @media (min-width: 1024px) {
-  .prose .code-block { margin-inline: -2.5rem; }
-}
-@media (min-width: 1280px) {
   .prose .code-block { margin-inline: -2.5rem; }
 }
