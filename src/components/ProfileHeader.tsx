@@ -1,23 +1,6 @@
 import { For, Show } from "solid-js";
 import type { GitHubUser, SocialAccount } from "~/lib/github.types";
 
-const PROVIDER_LABEL: Record<string, string> = {
-  linkedin: "LinkedIn",
-  mastodon: "Mastodon",
-  youtube: "YouTube",
-  twitch: "Twitch",
-  instagram: "Instagram",
-  facebook: "Facebook",
-  reddit: "Reddit",
-  hometown: "Hometown",
-  twitter: "Twitter",
-  generic: "Website",
-};
-
-function labelForProvider(p: string) {
-  return PROVIDER_LABEL[p] ?? p.charAt(0).toUpperCase() + p.slice(1);
-}
-
 function GitHubIcon() {
   return (
     <svg viewBox="0 0 24 24" class="h-5 w-5 md:h-4 md:w-4 fill-current" aria-hidden="true">

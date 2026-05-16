@@ -1,6 +1,6 @@
 import { Show, Suspense } from "solid-js";
 import { createAsync, query, useParams } from "@solidjs/router";
-import {Meta, Title} from "@solidjs/meta";
+import { Title } from "@solidjs/meta";
 import { getPost } from "~/lib/posts";
 import { Comments } from "~/components/Comments";
 import { TableOfContents } from "~/components/TableOfContents";
@@ -74,7 +74,7 @@ export default function BlogPost() {
               <aside class="hidden lg:block py-8 md:py-12">
                 <TableOfContents toc={p().toc} />
               </aside>
-              <BackFab topSelector="#post-header" endSelector="#post-end" />
+              <BackFab endSelector="#post-end" />
             </>
           )}
         </Show>

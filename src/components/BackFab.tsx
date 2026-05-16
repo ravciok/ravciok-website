@@ -3,17 +3,17 @@ import { createSignal, onCleanup, onMount } from "solid-js";
 type Mode = "hidden" | "top" | "back";
 
 const SCROLL_DIR_THRESHOLD = 50;
+const PAST_TOP_THRESHOLD = 200;
 
-export function BackFab(props: { topSelector: string; endSelector: string }) {
+export function BackFab(props: { endSelector: string }) {
   const [mode, setMode] = createSignal<Mode>("hidden");
-  const [hideByDir, setHideByDir] = createSignal(false);
+  const [hideByDir, setHideByDir] = createSignal(true);
 
   onMount(() => {
-    const topEl = document.querySelector(props.topSelector);
     const endEl = document.querySelector(props.endSelector);
-    if (!topEl || !endEl) return;
+    if (!endEl) return;
 
-    let pastTop = false;
+    let pastTop = window.scrollY > PAST_TOP_THRESHOLD;
     let nearEnd = false;
 
     const recompute = () => {
@@ -21,14 +21,6 @@ export function BackFab(props: { topSelector: string; endSelector: string }) {
       else if (nearEnd) setMode("back");
       else setMode("top");
     };
-
-    const topObs = new IntersectionObserver(
-      ([e]) => {
-        pastTop = !e.isIntersecting && e.boundingClientRect.top < 0;
-        recompute();
-      },
-      { threshold: 0, rootMargin: "-80px 0px 0px 0px" },
-    );
 
     const endObs = new IntersectionObserver(
       ([e]) => {
@@ -38,25 +30,29 @@ export function BackFab(props: { topSelector: string; endSelector: string }) {
       { threshold: 0 },
     );
 
-    topObs.observe(topEl);
     endObs.observe(endEl);
 
     let prevY = window.scrollY;
     const onScroll = () => {
       const y = window.scrollY;
+      const newPastTop = y > PAST_TOP_THRESHOLD;
+      if (newPastTop !== pastTop) {
+        pastTop = newPastTop;
+        recompute();
+      }
       const diff = y - prevY;
       if (diff > SCROLL_DIR_THRESHOLD) {
-        setHideByDir(false);
+        setHideByDir(true);
         prevY = y;
       } else if (diff < -SCROLL_DIR_THRESHOLD) {
-        setHideByDir(true);
+        setHideByDir(false);
         prevY = y;
       }
     };
     window.addEventListener("scroll", onScroll, { passive: true });
+    recompute();
 
     onCleanup(() => {
-      topObs.disconnect();
       endObs.disconnect();
       window.removeEventListener("scroll", onScroll);
     });
@@ -77,7 +73,7 @@ export function BackFab(props: { topSelector: string; endSelector: string }) {
   }
 
   return (
-    <div class="fixed bottom-1/12 left-1/2 -translate-x-1/2 lg:hidden">
+    <div class="fixed bottom-16 left-1/2 -translate-x-1/2 lg:hidden">
       <a
         href="/"
         aria-label={mode() === "back" ? "Back to home" : "Scroll to top"}

@@ -1,12 +1,6 @@
 import { For, Show } from "solid-js";
 import type { GitHubRepo } from "~/lib/github.types";
 
-const fmt = new Intl.DateTimeFormat("en-US", {
-  year: "numeric",
-  month: "short",
-  day: "numeric",
-});
-
 export function RepoGrid(props: { repos: GitHubRepo[]; limit?: number }) {
   const items = () => props.repos.slice(0, props.limit ?? 4);
 
