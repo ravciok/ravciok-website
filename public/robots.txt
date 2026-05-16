@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ravciok.dev/sitemap.xml

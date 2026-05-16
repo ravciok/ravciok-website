@@ -1,20 +1,20 @@
 import { Show, Suspense } from "solid-js";
-import { createAsync, query, useParams } from "@solidjs/router";
-import { Title } from "@solidjs/meta";
+import { createAsync, useParams } from "@solidjs/router";
+import { Link, Meta, Title } from "@solidjs/meta";
 import { getPost } from "~/lib/posts";
 import { Comments } from "~/components/Comments";
 import { TableOfContents } from "~/components/TableOfContents";
 import { NotFound } from "~/components/NotFound";
 import { BackFab } from "~/components/BackFab";
+import { CodeCopy } from "~/components/CodeCopy";
+import { HeadingAnchors } from "~/components/HeadingAnchors";
+import { JsonLd } from "~/components/JsonLd";
+import { SITE } from "~/lib/site";
 
-const getPostQuery = query(async (slug: string) => {
+async function fetchPost(slug: string) {
   "use server";
   return getPost(slug);
-}, "post");
-
-export const route = {
-  preload: ({ params }: { params: { slug: string } }) => getPostQuery(params.slug),
-};
+}
 
 const fmt = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
@@ -29,7 +29,7 @@ function formatDate(iso: string) {
 
 export default function BlogPost() {
   const params = useParams<{ slug: string }>();
-  const post = createAsync(() => getPostQuery(params.slug), { deferStream: true });
+  const post = createAsync(() => fetchPost(params.slug), { deferStream: true });
 
   return (
     <main class="max-w-screen-md lg:max-w-screen-lg mx-auto px-4 md:px-6 lg:grid lg:grid-cols-[1fr_14rem] lg:gap-12">
@@ -44,9 +44,44 @@ export default function BlogPost() {
           when={post()}
           fallback={<div class="lg:col-span-2"><NotFound /></div>}
         >
-          {(p) => (
+          {(p) => {
+            const url = `${SITE.url}/blog/${params.slug}`;
+            return (
             <>
-              <Title>{p().title} · ravciok.dev</Title>
+              <Title>{p().title} · {SITE.name}</Title>
+              <Meta name="description" content={p().excerpt} />
+              <Link rel="canonical" href={url} />
+              <Meta property="og:type" content="article" />
+              <Meta property="og:title" content={p().title} />
+              <Meta property="og:description" content={p().excerpt} />
+              <Meta property="og:url" content={url} />
+              <Show when={p().date}>
+                <Meta property="article:published_time" content={p().date} />
+              </Show>
+              <Meta property="article:author" content={SITE.author} />
+              <Meta name="twitter:title" content={p().title} />
+              <Meta name="twitter:description" content={p().excerpt} />
+              <JsonLd
+                data={{
+                  "@context": "https://schema.org",
+                  "@type": "Article",
+                  headline: p().title,
+                  description: p().excerpt,
+                  datePublished: p().date,
+                  author: { "@id": `${SITE.url}/#person` },
+                  mainEntityOfPage: { "@type": "WebPage", "@id": url },
+                }}
+              />
+              <JsonLd
+                data={{
+                  "@context": "https://schema.org",
+                  "@type": "BreadcrumbList",
+                  itemListElement: [
+                    { "@type": "ListItem", position: 1, name: "Home", item: SITE.url },
+                    { "@type": "ListItem", position: 2, name: p().title, item: url },
+                  ],
+                }}
+              />
               <div class="min-w-0">
                 <article class="prose prose-sm md:prose-base lg:prose-lg max-w-none py-8 md:py-12">
                   <header id="post-header" class="mb-12 not-prose">
@@ -75,8 +110,11 @@ export default function BlogPost() {
                 <TableOfContents toc={p().toc} />
               </aside>
               <BackFab endSelector="#post-end" />
+              <CodeCopy containerSelector="article" />
+              <HeadingAnchors containerSelector="article" />
             </>
-          )}
+            );
+          }}
         </Show>
       </Suspense>
     </main>
