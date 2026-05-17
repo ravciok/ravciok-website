@@ -25,7 +25,7 @@ export function BlogList(props: { posts: PostMeta[] }) {
             {(p) => (
               <a
                 href={`/blog/${p.slug}`}
-                class="group card bg-secondary-content/30 ring-0 ring-offset-base-100 hover:ring-2 hover:ring-secondary/80 hover:ring-offset-4 active:bg-secondary-content/50 transition-all"
+                class="group card touch-manipulation bg-secondary-content/30 ring-0 ring-offset-base-100 hover:ring-2 hover:ring-secondary/80 hover:ring-offset-4 active:bg-secondary-content/50 transition-all"
               >
                 <div class="card-body">
                   <div class="text-xs opacity-70 flex items-center gap-2">

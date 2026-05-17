@@ -10,6 +10,8 @@ export default createHandler(() => (
         <head>
           <meta charset="utf-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+          <meta name="theme-color" content="#282a36" media="(prefers-color-scheme: dark)" />
           <link rel="preconnect" href="https://5qcsm3rhzn.ucarecd.net" crossorigin="anonymous" />
           <link rel="alternate" type="application/rss+xml" title="Rafał Ciok" href="/feed.xml" />
           <link rel="sitemap" type="application/xml" href="/sitemap.xml" />

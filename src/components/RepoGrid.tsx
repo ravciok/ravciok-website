@@ -14,7 +14,7 @@ export function RepoGrid(props: { repos: GitHubRepo[]; limit?: number }) {
               <div class="group card bg-secondary-content/30 ring-0 ring-offset-base-100 hover:ring-2 hover:ring-secondary/80 hover:ring-offset-4 active:bg-secondary-content/50 transition-all relative">
                 <a
                   href={repo.html_url}
-                  class="absolute inset-0 z-0 rounded-[inherit]"
+                  class="absolute inset-0 z-0 rounded-[inherit] touch-manipulation"
                   aria-label={repo.name}
                 />
                 <div class="card-body pointer-events-none">

@@ -33,7 +33,6 @@ export function BackFab(props: { endSelector: string }) {
     endObs.observe(endEl);
 
     let prevY = window.scrollY;
-    let idleId: number | undefined;
     const onScroll = () => {
       const y = window.scrollY;
       const newPastTop = y > PAST_TOP_THRESHOLD;
@@ -49,8 +48,6 @@ export function BackFab(props: { endSelector: string }) {
         setHideByDir(false);
         prevY = y;
       }
-      if (idleId) clearTimeout(idleId);
-      idleId = window.setTimeout(() => setHideByDir(false), 200);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     recompute();
@@ -58,7 +55,6 @@ export function BackFab(props: { endSelector: string }) {
     onCleanup(() => {
       endObs.disconnect();
       window.removeEventListener("scroll", onScroll);
-      if (idleId) clearTimeout(idleId);
     });
   });
 
@@ -82,7 +78,7 @@ export function BackFab(props: { endSelector: string }) {
         href="/"
         aria-label={mode() === "back" ? "Back to home" : "Scroll to top"}
         onClick={handleClick}
-        class={`btn btn-circle btn-lg shadow-[0_4px_10px_-2px_rgba(0,0,0,0.7)] transition-opacity duration-300 ease-out motion-reduce:transition-none ${
+        class={`btn btn-circle btn-lg touch-manipulation shadow-[0_4px_10px_-2px_rgba(0,0,0,0.7)] transition-opacity duration-300 ease-out motion-reduce:transition-none ${
           mode() === "back" ? "btn-primary" : "btn-accent"
         } ${
           visible() ? "opacity-100" : "opacity-0 pointer-events-none"
