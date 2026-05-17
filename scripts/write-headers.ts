@@ -40,7 +40,7 @@ function buildCsp(scriptHashes: string[]): string {
     `default-src 'self'`,
     `script-src 'self' ${hashList} https://cloud.umami.is`,
     `style-src 'self' 'unsafe-inline'`,
-    `img-src 'self' data: https://*.githubusercontent.com`,
+    `img-src 'self' data: https://5qcsm3rhzn.ucarecd.net`,
     `font-src 'self' data:`,
     `connect-src 'self' https://cloud.umami.is https://api-gateway.umami.dev`,
     `frame-src https://giscus.app`,

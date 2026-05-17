@@ -93,6 +93,9 @@ export interface PostMeta {
   date: string;
   excerpt: string;
   readTime: number;
+  bannerId?: string;
+  bannerAlt?: string;
+  bannerCredit?: string;
 }
 
 export interface TocEntry {
@@ -101,9 +104,29 @@ export interface TocEntry {
   slug: string;
 }
 
+export interface PostBanner {
+  id: string;
+  alt: string;
+  credit: string;
+}
+
 export interface Post extends PostMeta {
   html: string;
   toc: TocEntry[];
+  banner: PostBanner | null;
+}
+
+function stripMdLinks(s: string): string {
+  return s.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1");
+}
+
+function parseBanner(data: Record<string, unknown>): PostBanner | null {
+  const id = typeof data.bannerId === "string" ? data.bannerId.trim() : "";
+  if (!id) return null;
+  const alt = typeof data.bannerAlt === "string" ? data.bannerAlt : "";
+  const creditRaw = typeof data.bannerCredit === "string" ? data.bannerCredit : "";
+  const credit = creditRaw ? stripMdLinks(creditRaw) : "";
+  return { id, alt, credit };
 }
 
 function slugify(s: string): string {
@@ -165,12 +188,15 @@ export async function listPosts(): Promise<PostMeta[]> {
     files.map(async (f) => {
       const raw = await readFile(join(POSTS_DIR, f), "utf8");
       const { data, content } = matter(raw);
+      const bannerId = typeof data.bannerId === "string" ? data.bannerId.trim() : "";
+      const bannerAlt = typeof data.bannerAlt === "string" ? data.bannerAlt : "";
       return {
         slug: f.replace(/\.md$/, ""),
         title: String(data.title ?? f),
         date: data.date instanceof Date ? data.date.toISOString() : String(data.date ?? ""),
         excerpt: String(data.excerpt ?? ""),
         readTime: resolveReadTime(data, content),
+        ...(bannerId && { bannerId, bannerAlt }),
       };
     }),
   );
@@ -203,6 +229,7 @@ export async function getPost(slug: string): Promise<Post | null> {
       readTime: resolveReadTime(data, body),
       html,
       toc,
+      banner: parseBanner(data),
     };
   } catch {
     return null;

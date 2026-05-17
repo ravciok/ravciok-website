@@ -10,7 +10,7 @@ export default createHandler(() => (
         <head>
           <meta charset="utf-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <link rel="preconnect" href="https://avatars.githubusercontent.com" />
+          <link rel="preconnect" href="https://5qcsm3rhzn.ucarecd.net" crossorigin="anonymous" />
           <link rel="alternate" type="application/rss+xml" title="Rafał Ciok" href="/feed.xml" />
           <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
           <link

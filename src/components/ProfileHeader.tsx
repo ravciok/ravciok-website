@@ -1,5 +1,8 @@
 import { For, Show } from "solid-js";
 import type { GitHubUser, SocialAccount } from "~/lib/github.types";
+import { ucareSquare } from "~/lib/images";
+
+const HERO_UUID = "d7ed344f-e492-4bb5-a7bb-c26349c9218f";
 
 function GitHubIcon() {
   return (
@@ -33,15 +36,9 @@ function ProviderIcon(props: { provider: string }) {
   );
 }
 
-function sized(rawUrl: string, size: number): string {
-  const url = new URL(rawUrl);
-  url.searchParams.set("s", String(size));
-  return url.toString();
-}
-
 export function ProfileHeader(props: { user: GitHubUser; socialAccounts: SocialAccount[] }) {
+  const hero = (size: number) => ucareSquare(HERO_UUID, size);
   const u = () => props.user;
-  const url = u().avatar_url;
 
   return (
     <section class="my-8">
@@ -49,8 +46,8 @@ export function ProfileHeader(props: { user: GitHubUser; socialAccounts: SocialA
         <div class="avatar shrink-0">
           <div class="w-28 md:w-32 rounded-full">
             <img
-              src={sized(url,256)}
-              srcset={`${sized(url,128)} 1x, ${sized(url,256)} 2x`}
+              src={hero(128)}
+              srcset={`${hero(128)} 1x, ${hero(256)} 2x, ${hero(384)} 3x`}
               alt={`${u().name} avatar`}
               width="128"
               height="128"

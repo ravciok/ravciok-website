@@ -2,6 +2,11 @@
 title: Hello, world
 date: 2026-04-27
 excerpt: Kicking off the blog with a quick hello and a few notes about what's coming.
+tags: [hello, world]
+readTime: 1
+bannerId: eef890aa-372b-4ba7-ae18-34852d64ac21
+bannerAlt: Stunning sunrise over the rolling hills and forested valleys of Crespano del Grappa, Veneto, Italy.
+bannerCredit: Photo by [Cesare Brunello](https://www.pexels.com/photo/a-scenic-view-of-a-valley-with-hills-and-grass-24643975)
 ---
 
 # Hello, world

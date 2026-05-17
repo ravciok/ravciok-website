@@ -2,6 +2,7 @@ import { Show, Suspense } from "solid-js";
 import { createAsync, useParams } from "@solidjs/router";
 import { Link, Meta, Title } from "@solidjs/meta";
 import { getPost } from "~/lib/posts";
+import { ucareCrop } from "~/lib/images";
 import { Comments } from "~/components/Comments";
 import { TableOfContents } from "~/components/TableOfContents";
 import { NotFound } from "~/components/NotFound";
@@ -61,6 +62,22 @@ export default function BlogPost() {
               <Meta property="article:author" content={SITE.author} />
               <Meta name="twitter:title" content={p().title} />
               <Meta name="twitter:description" content={p().excerpt} />
+              <Show when={p().banner}>
+                {(b) => {
+                  const ogImg = ucareCrop(b().id, 1200, 630);
+                  return (
+                    <>
+                      <Meta property="og:image" content={ogImg} />
+                      <Meta property="og:image:width" content="1200" />
+                      <Meta property="og:image:height" content="630" />
+                      <Meta property="og:image:alt" content={b().alt} />
+                      <Meta name="twitter:card" content="summary_large_image" />
+                      <Meta name="twitter:image" content={ogImg} />
+                      <Meta name="twitter:image:alt" content={b().alt} />
+                    </>
+                  );
+                }}
+              </Show>
               <JsonLd
                 data={{
                   "@context": "https://schema.org",
@@ -70,6 +87,7 @@ export default function BlogPost() {
                   datePublished: p().date,
                   author: { "@id": `${SITE.url}/#person` },
                   mainEntityOfPage: { "@type": "WebPage", "@id": url },
+                  ...(p().banner && { image: ucareCrop(p().banner!.id, 1200, 630) }),
                 }}
               />
               <JsonLd
@@ -100,6 +118,22 @@ export default function BlogPost() {
                       </Show>
                     </div>
                   </header>
+                  <Show when={p().banner}>
+                    {(b) => (
+                      <img
+                        class="not-prose mb-12 w-full h-auto rounded-lg md:-mx-4 md:w-[calc(100%+2rem)] lg:-mx-10 lg:w-[calc(100%+5rem)] max-w-none"
+                        src={ucareCrop(b().id, 1280, 720)}
+                        srcset={`${ucareCrop(b().id, 640, 360)} 640w, ${ucareCrop(b().id, 960, 540)} 960w, ${ucareCrop(b().id, 1280, 720)} 1280w, ${ucareCrop(b().id, 1920, 1080)} 1920w`}
+                        sizes="(min-width: 1024px) 848px, (min-width: 768px) 800px, 100vw"
+                        width="1280"
+                        height="720"
+                        alt={b().alt}
+                        title={b().credit}
+                        fetchpriority="high"
+                        decoding="async"
+                      />
+                    )}
+                  </Show>
                   <div innerHTML={p().html} />
                 </article>
                 <section id="post-end" class="mt-4 mb-12">
