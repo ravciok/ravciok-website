@@ -1,8 +1,7 @@
 import { For, Show } from "solid-js";
 import type { GitHubUser, SocialAccount } from "~/lib/github.types";
 import { ucareSquare } from "~/lib/images";
-
-const HERO_UUID = "d7ed344f-e492-4bb5-a7bb-c26349c9218f";
+import { SITE } from "~/lib/site";
 
 function GitHubIcon() {
   return (
@@ -37,7 +36,7 @@ function ProviderIcon(props: { provider: string }) {
 }
 
 export function ProfileHeader(props: { user: GitHubUser; socialAccounts: SocialAccount[] }) {
-  const hero = (size: number) => ucareSquare(HERO_UUID, size);
+  const hero = (size: number) => ucareSquare(SITE.heroId, size);
   const u = () => props.user;
 
   return (

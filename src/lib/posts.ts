@@ -93,9 +93,6 @@ export interface PostMeta {
   date: string;
   excerpt: string;
   readTime: number;
-  bannerId?: string;
-  bannerAlt?: string;
-  bannerCredit?: string;
 }
 
 export interface TocEntry {
@@ -188,15 +185,12 @@ export async function listPosts(): Promise<PostMeta[]> {
     files.map(async (f) => {
       const raw = await readFile(join(POSTS_DIR, f), "utf8");
       const { data, content } = matter(raw);
-      const bannerId = typeof data.bannerId === "string" ? data.bannerId.trim() : "";
-      const bannerAlt = typeof data.bannerAlt === "string" ? data.bannerAlt : "";
       return {
         slug: f.replace(/\.md$/, ""),
         title: String(data.title ?? f),
         date: data.date instanceof Date ? data.date.toISOString() : String(data.date ?? ""),
         excerpt: String(data.excerpt ?? ""),
         readTime: resolveReadTime(data, content),
-        ...(bannerId && { bannerId, bannerAlt }),
       };
     }),
   );

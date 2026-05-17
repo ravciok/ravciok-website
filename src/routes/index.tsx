@@ -7,8 +7,10 @@ import { ProfileHeader } from "~/components/ProfileHeader";
 import { ProfileReadme } from "~/components/ProfileReadme";
 import { RepoGrid } from "~/components/RepoGrid";
 import { BlogList } from "~/components/BlogList";
-import { JsonLd } from "~/components/JsonLd";
 import { SITE } from "~/lib/site";
+import { ucareCrop } from "~/lib/images";
+
+const HOME_OG_IMAGE = ucareCrop(SITE.heroId, 1200, 630);
 
 const getHomeData = query(async () => {
   "use server";
@@ -31,26 +33,15 @@ export default function Home() {
       <Meta property="og:title" content={SITE.name} />
       <Meta property="og:description" content={SITE.description} />
       <Meta property="og:url" content={SITE.url} />
-      <JsonLd
-        data={{
-          "@context": "https://schema.org",
-          "@type": "WebSite",
-          url: SITE.url,
-          name: SITE.name,
-          description: SITE.description,
-          author: { "@id": `${SITE.url}/#person` },
-        }}
-      />
-      <JsonLd
-        data={{
-          "@context": "https://schema.org",
-          "@type": "Person",
-          "@id": `${SITE.url}/#person`,
-          name: SITE.author,
-          url: SITE.url,
-          sameAs: SITE.profiles,
-        }}
-      />
+      <Meta property="og:image" content={HOME_OG_IMAGE} />
+      <Meta property="og:image:width" content="1200" />
+      <Meta property="og:image:height" content="630" />
+      <Meta property="og:image:alt" content={`${SITE.author} portrait`} />
+      <Meta name="twitter:card" content="summary_large_image" />
+      <Meta name="twitter:title" content={SITE.name} />
+      <Meta name="twitter:description" content={SITE.description} />
+      <Meta name="twitter:image" content={HOME_OG_IMAGE} />
+      <Meta name="twitter:image:alt" content={`${SITE.author} portrait`} />
       <Suspense
         fallback={
           <div class="py-12 text-center">

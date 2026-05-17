@@ -7,4 +7,5 @@ export const SITE = {
     "https://github.com/ravciok",
     "https://www.linkedin.com/in/ravciok",
   ],
+  heroId: "d7ed344f-e492-4bb5-a7bb-c26349c9218f",
 } as const;

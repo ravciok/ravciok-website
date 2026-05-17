@@ -13,11 +13,8 @@ export default createHandler(() => (
           <link rel="preconnect" href="https://5qcsm3rhzn.ucarecd.net" crossorigin="anonymous" />
           <link rel="alternate" type="application/rss+xml" title="Rafał Ciok" href="/feed.xml" />
           <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
-          <link
-            rel="icon"
-            type="image/svg+xml"
-            href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23570df8'/%3E%3Ctext x='50%25' y='24' text-anchor='middle' font-family='system-ui,sans-serif' font-size='24' font-weight='700' fill='white'%3Er%3C/text%3E%3C/svg%3E"
-          />
+          <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+          <link rel="apple-touch-icon" href="/apple-touch-icon.svg" />
 
           <script defer src="https://cloud.umami.is/script.js" data-website-id={process.env.UMAMI_ID} />
           <script innerHTML={ANTI_FLASH} />

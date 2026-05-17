@@ -33,6 +33,7 @@ export function BackFab(props: { endSelector: string }) {
     endObs.observe(endEl);
 
     let prevY = window.scrollY;
+    let idleId: number | undefined;
     const onScroll = () => {
       const y = window.scrollY;
       const newPastTop = y > PAST_TOP_THRESHOLD;
@@ -48,6 +49,8 @@ export function BackFab(props: { endSelector: string }) {
         setHideByDir(false);
         prevY = y;
       }
+      if (idleId) clearTimeout(idleId);
+      idleId = window.setTimeout(() => setHideByDir(false), 200);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     recompute();
@@ -55,6 +58,7 @@ export function BackFab(props: { endSelector: string }) {
     onCleanup(() => {
       endObs.disconnect();
       window.removeEventListener("scroll", onScroll);
+      if (idleId) clearTimeout(idleId);
     });
   });
 
@@ -73,7 +77,7 @@ export function BackFab(props: { endSelector: string }) {
   }
 
   return (
-    <div class="fixed bottom-16 left-1/2 -translate-x-1/2 lg:hidden">
+    <div class="fixed bottom-16 left-1/2 -translate-x-1/2 z-40 lg:hidden">
       <a
         href="/"
         aria-label={mode() === "back" ? "Back to home" : "Scroll to top"}

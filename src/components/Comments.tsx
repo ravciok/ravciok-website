@@ -32,19 +32,21 @@ export function Comments() {
   });
 
   return (
-    <Giscus
-      repo={REPO as `${string}/${string}`}
-      repoId={REPO_ID}
-      category={CATEGORY}
-      categoryId={CATEGORY_ID}
-      mapping="pathname"
-      strict="1"
-      reactionsEnabled="1"
-      emitMetadata="1"
-      inputPosition="bottom"
-      theme={theme()}
-      lang="en"
-      loading="lazy"
-    />
+    <div class="min-h-[420px]">
+      <Giscus
+        repo={REPO as `${string}/${string}`}
+        repoId={REPO_ID}
+        category={CATEGORY}
+        categoryId={CATEGORY_ID}
+        mapping="pathname"
+        strict="1"
+        reactionsEnabled="1"
+        emitMetadata="1"
+        inputPosition="bottom"
+        theme={theme()}
+        lang="en"
+        loading="lazy"
+      />
+    </div>
   );
 }

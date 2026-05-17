@@ -9,8 +9,9 @@ import { NotFound } from "~/components/NotFound";
 import { BackFab } from "~/components/BackFab";
 import { CodeCopy } from "~/components/CodeCopy";
 import { HeadingAnchors } from "~/components/HeadingAnchors";
-import { JsonLd } from "~/components/JsonLd";
 import { SITE } from "~/lib/site";
+
+const FALLBACK_OG_IMAGE = ucareCrop(SITE.heroId, 1200, 630);
 
 async function fetchPost(slug: string) {
   "use server";
@@ -56,50 +57,24 @@ export default function BlogPost() {
               <Meta property="og:title" content={p().title} />
               <Meta property="og:description" content={p().excerpt} />
               <Meta property="og:url" content={url} />
-              <Show when={p().date}>
-                <Meta property="article:published_time" content={p().date} />
-              </Show>
-              <Meta property="article:author" content={SITE.author} />
               <Meta name="twitter:title" content={p().title} />
               <Meta name="twitter:description" content={p().excerpt} />
-              <Show when={p().banner}>
-                {(b) => {
-                  const ogImg = ucareCrop(b().id, 1200, 630);
-                  return (
-                    <>
-                      <Meta property="og:image" content={ogImg} />
-                      <Meta property="og:image:width" content="1200" />
-                      <Meta property="og:image:height" content="630" />
-                      <Meta property="og:image:alt" content={b().alt} />
-                      <Meta name="twitter:card" content="summary_large_image" />
-                      <Meta name="twitter:image" content={ogImg} />
-                      <Meta name="twitter:image:alt" content={b().alt} />
-                    </>
-                  );
-                }}
-              </Show>
-              <JsonLd
-                data={{
-                  "@context": "https://schema.org",
-                  "@type": "Article",
-                  headline: p().title,
-                  description: p().excerpt,
-                  datePublished: p().date,
-                  author: { "@id": `${SITE.url}/#person` },
-                  mainEntityOfPage: { "@type": "WebPage", "@id": url },
-                  ...(p().banner && { image: ucareCrop(p().banner!.id, 1200, 630) }),
-                }}
-              />
-              <JsonLd
-                data={{
-                  "@context": "https://schema.org",
-                  "@type": "BreadcrumbList",
-                  itemListElement: [
-                    { "@type": "ListItem", position: 1, name: "Home", item: SITE.url },
-                    { "@type": "ListItem", position: 2, name: p().title, item: url },
-                  ],
-                }}
-              />
+              <Meta name="twitter:card" content="summary_large_image" />
+              {(() => {
+                const b = p().banner;
+                const img = b ? ucareCrop(b.id, 1200, 630) : FALLBACK_OG_IMAGE;
+                const alt = b ? b.alt : `${SITE.author} portrait`;
+                return (
+                  <>
+                    <Meta property="og:image" content={img} />
+                    <Meta property="og:image:width" content="1200" />
+                    <Meta property="og:image:height" content="630" />
+                    <Meta property="og:image:alt" content={alt} />
+                    <Meta name="twitter:image" content={img} />
+                    <Meta name="twitter:image:alt" content={alt} />
+                  </>
+                );
+              })()}
               <div class="min-w-0">
                 <article class="prose prose-sm md:prose-base lg:prose-lg max-w-none py-8 md:py-12">
                   <header id="post-header" class="mb-12 not-prose">
