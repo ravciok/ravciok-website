@@ -2,7 +2,7 @@ import { Show, Suspense } from "solid-js";
 import { createAsync, useParams } from "@solidjs/router";
 import { Link, Meta, Title } from "@solidjs/meta";
 import { getPost } from "~/lib/posts";
-import { ucareCrop } from "~/lib/images";
+import { ucareCrop, ucareResize } from "~/lib/images";
 import { Comments } from "~/components/Comments";
 import { TableOfContents } from "~/components/TableOfContents";
 import { NotFound } from "~/components/NotFound";
@@ -11,7 +11,7 @@ import { CodeCopy } from "~/components/CodeCopy";
 import { HeadingAnchors } from "~/components/HeadingAnchors";
 import { SITE } from "~/lib/site";
 
-const FALLBACK_OG_IMAGE = ucareCrop(SITE.heroId, 1200, 630);
+const FALLBACK_OG_IMAGE = ucareResize(SITE.heroId, 1200, 630);
 
 async function fetchPost(slug: string) {
   "use server";
@@ -62,7 +62,7 @@ export default function BlogPost() {
               <Meta name="twitter:card" content="summary_large_image" />
               {(() => {
                 const b = p().banner;
-                const img = b ? ucareCrop(b.id, 1200, 630) : FALLBACK_OG_IMAGE;
+                const img = b ? ucareCrop(b.id, 1200, 630, 'bottom') : FALLBACK_OG_IMAGE;
                 const alt = b ? b.alt : `${SITE.author} portrait`;
                 return (
                   <>
@@ -97,8 +97,8 @@ export default function BlogPost() {
                     {(b) => (
                       <img
                         class="not-prose mb-12 w-full h-auto rounded-lg md:-mx-4 md:w-[calc(100%+2rem)] lg:-mx-10 lg:w-[calc(100%+5rem)] max-w-none"
-                        src={ucareCrop(b().id, 1280, 720)}
-                        srcset={`${ucareCrop(b().id, 640, 360)} 640w, ${ucareCrop(b().id, 960, 540)} 960w, ${ucareCrop(b().id, 1280, 720)} 1280w, ${ucareCrop(b().id, 1920, 1080)} 1920w`}
+                        src={ucareCrop(b().id, 1280, 720, 'bottom')}
+                        srcset={`${ucareCrop(b().id, 640, 360, 'bottom')} 640w, ${ucareCrop(b().id, 960, 540, 'bottom')} 960w, ${ucareCrop(b().id, 1280, 720,'bottom')} 1280w, ${ucareCrop(b().id, 1920, 1080,'bottom')} 1920w`}
                         sizes="(min-width: 1024px) 848px, (min-width: 768px) 800px, 100vw"
                         width="1280"
                         height="720"

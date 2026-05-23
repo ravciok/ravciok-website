@@ -8,9 +8,9 @@ import { ProfileReadme } from "~/components/ProfileReadme";
 import { RepoGrid } from "~/components/RepoGrid";
 import { BlogList } from "~/components/BlogList";
 import { SITE } from "~/lib/site";
-import { ucareCrop } from "~/lib/images";
+import { ucareResize } from "~/lib/images";
 
-const HOME_OG_IMAGE = ucareCrop(SITE.heroId, 1200, 630);
+const HOME_OG_IMAGE = ucareResize(SITE.heroId, 1200, 630);
 
 const getHomeData = query(async () => {
   "use server";
