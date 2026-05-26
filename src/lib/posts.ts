@@ -111,6 +111,7 @@ export interface Post extends PostMeta {
   html: string;
   toc: TocEntry[];
   banner: PostBanner | null;
+  updated: string | null;
 }
 
 function stripMdLinks(s: string): string {
@@ -215,6 +216,12 @@ export async function getPost(slug: string): Promise<Post | null> {
     const toc = buildToc(tokens);
     await highlightAllCode(tokens);
     const html = marked.parser(tokens);
+    const updated =
+      data.updated instanceof Date
+        ? data.updated.toISOString()
+        : typeof data.updated === "string" && data.updated.trim()
+          ? data.updated.trim()
+          : null;
     return {
       slug,
       title,
@@ -224,6 +231,7 @@ export async function getPost(slug: string): Promise<Post | null> {
       html,
       toc,
       banner: parseBanner(data),
+      updated,
     };
   } catch {
     return null;

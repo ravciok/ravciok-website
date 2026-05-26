@@ -64,6 +64,27 @@ export default function BlogPost() {
                 const b = p().banner;
                 const img = b ? ucareCrop(b.id, 1200, 630, 'bottom') : FALLBACK_OG_IMAGE;
                 const alt = b ? b.alt : `${SITE.author} portrait`;
+                const ldJson = JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@type": "BlogPosting",
+                  headline: p().title,
+                  description: p().excerpt,
+                  image: img,
+                  datePublished: p().date,
+                  ...(p().updated ? { dateModified: p().updated } : {}),
+                  author: { "@id": `${SITE.url}/#person` },
+                  publisher: { "@id": `${SITE.url}/#person` },
+                  isPartOf: { "@id": `${SITE.url}/#website` },
+                  mainEntityOfPage: url,
+                }).replace(/</g, "\\u003c");
+                const breadcrumbJson = JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@type": "BreadcrumbList",
+                  itemListElement: [
+                    { "@type": "ListItem", position: 1, name: "Home", item: SITE.url },
+                    { "@type": "ListItem", position: 2, name: p().title, item: url },
+                  ],
+                }).replace(/</g, "\\u003c");
                 return (
                   <>
                     <Meta property="og:image" content={img} />
@@ -72,6 +93,8 @@ export default function BlogPost() {
                     <Meta property="og:image:alt" content={alt} />
                     <Meta name="twitter:image" content={img} />
                     <Meta name="twitter:image:alt" content={alt} />
+                    <script type="application/ld+json" innerHTML={ldJson} />
+                    <script type="application/ld+json" innerHTML={breadcrumbJson} />
                   </>
                 );
               })()}

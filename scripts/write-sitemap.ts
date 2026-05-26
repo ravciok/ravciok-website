@@ -28,9 +28,15 @@ async function listPostEntries(): Promise<SitemapEntry[]> {
       const { data } = matter(raw);
       const slug = f.replace(/\.md$/, "");
       const date = data.date instanceof Date ? data.date.toISOString() : String(data.date ?? "");
+      const updatedRaw =
+        data.updated instanceof Date
+          ? data.updated.toISOString()
+          : typeof data.updated === "string" && data.updated.trim()
+            ? data.updated.trim()
+            : "";
       return {
         loc: `${SITE_URL}/blog/${slug}`,
-        lastmod: toDateOnly(date),
+        lastmod: toDateOnly(updatedRaw || date),
       } satisfies SitemapEntry;
     }),
   );
