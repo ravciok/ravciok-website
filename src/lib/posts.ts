@@ -93,7 +93,7 @@ async function highlightCode(text: string, lang: string): Promise<string> {
     ? `<span class="code-lang" aria-hidden="true">${escapeHtml(supported)}</span>`
     : "";
   const fileBadge = filename
-    ? `<span class="code-file">${escapeHtml(filename)}</span>`
+    ? `<span class="code-file" title="${escapeHtml(filename)}">${escapeHtml(filename)}</span>`
     : "";
   return `<div class="code-block" data-lang="${renderLang}">${langBadge}${fileBadge}${html}</div>`;
 }

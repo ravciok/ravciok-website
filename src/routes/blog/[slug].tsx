@@ -99,7 +99,7 @@ export default function BlogPost() {
                 );
               })()}
               <div class="min-w-0">
-                <article class="prose leading-loose max-w-none py-8 md:py-12">
+                <article class="prose prose-sm md:prose-base leading-loose max-w-none py-8 md:py-12">
                   <header id="post-header" class="mb-12 not-prose">
                     <h1 class="text-3xl md:text-4xl lg:text-blog-title font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                       {p().title}
@@ -120,7 +120,7 @@ export default function BlogPost() {
                     {(b) => (
                       <img
                         class="not-prose mb-12 w-full h-auto rounded-lg md:-mx-4 md:w-[calc(100%+2rem)] lg:-mx-10 lg:w-[calc(100%+5rem)] max-w-none"
-                        src={ucareCrop(b().id, 1280, 720, 'bottom')}
+                        src={ucareCrop(b().id, 640, 360, 'bottom')}
                         srcset={`${ucareCrop(b().id, 640, 360, 'bottom')} 640w, ${ucareCrop(b().id, 960, 540, 'bottom')} 960w, ${ucareCrop(b().id, 1280, 720,'bottom')} 1280w, ${ucareCrop(b().id, 1920, 1080,'bottom')} 1920w`}
                         sizes="(min-width: 1024px) 848px, (min-width: 768px) 800px, 100vw"
                         width="1280"
