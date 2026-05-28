@@ -47,6 +47,33 @@ export function escapeHtml(s: string) {
     .replace(/'/g, "&#39;");
 }
 
+function lineText(node: { children?: unknown[] }): string {
+  let acc = "";
+  for (const child of node.children ?? []) {
+    const c = child as {
+      type?: string;
+      value?: string;
+      children?: { type?: string; value?: string }[];
+    };
+    if (c.type === "element" && c.children?.[0]?.type === "text") {
+      acc += c.children[0].value ?? "";
+    } else if (c.type === "text") {
+      acc += c.value ?? "";
+    }
+  }
+  return acc;
+}
+
+function tintDiffLine(node: { properties?: Record<string, unknown>; children?: unknown[] }) {
+  const ch = lineText(node)[0];
+  if (ch !== "+" && ch !== "-") return;
+  const existing = (node.properties?.class as string | undefined) ?? "";
+  const klass = ch === "+" ? "line-add" : "line-remove";
+  node.properties = { ...(node.properties ?? {}), class: `${existing} ${klass}`.trim() };
+}
+
+const diffLineTransformer = { name: "diff-line-tint", line: tintDiffLine };
+
 async function highlightCode(text: string, lang: string): Promise<string> {
   const trimmed = lang.trim();
   const colonIdx = trimmed.indexOf(":");
@@ -60,6 +87,7 @@ async function highlightCode(text: string, lang: string): Promise<string> {
   const html = h.codeToHtml(text, {
     lang: renderLang,
     themes: { light: "catppuccin-latte", dark: "catppuccin-frappe" },
+    transformers: renderLang === "diff" ? [diffLineTransformer] : [],
   });
   const langBadge = supported
     ? `<span class="code-lang" aria-hidden="true">${escapeHtml(supported)}</span>`
@@ -68,6 +96,12 @@ async function highlightCode(text: string, lang: string): Promise<string> {
     ? `<span class="code-file">${escapeHtml(filename)}</span>`
     : "";
   return `<div class="code-block" data-lang="${renderLang}">${langBadge}${fileBadge}${html}</div>`;
+}
+
+const INTERNAL_HOST = /^https?:\/\/(?:[^/]+\.)?ravciok\.dev(?:\/|$)/i;
+
+function isExternalHref(href: string): boolean {
+  return /^https?:\/\//i.test(href) && !INTERNAL_HOST.test(href);
 }
 
 marked.setOptions({ gfm: true, breaks: false });
@@ -83,6 +117,14 @@ marked.use({
       const inline = this.parser.parseInline(t.tokens);
       const id = t.slug ? ` id="${t.slug}"` : "";
       return `<h${t.depth}${id}>${inline}</h${t.depth}>\n`;
+    },
+    link(this: { parser: { parseInline: (tokens: Token[]) => string } }, token: Tokens.Link) {
+      const href = token.href ?? "";
+      const inner = this.parser.parseInline(token.tokens);
+      const titleAttr = token.title ? ` title="${escapeHtml(token.title)}"` : "";
+      const external = isExternalHref(href);
+      const extra = external ? ` class="external" rel="noopener noreferrer"` : "";
+      return `<a href="${escapeHtml(href)}"${titleAttr}${extra}>${inner}</a>`;
     },
   },
 });

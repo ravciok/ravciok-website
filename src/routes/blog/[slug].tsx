@@ -99,7 +99,7 @@ export default function BlogPost() {
                 );
               })()}
               <div class="min-w-0">
-                <article class="prose prose-sm md:prose-base lg:prose-lg max-w-none py-8 md:py-12">
+                <article class="prose leading-loose max-w-none py-8 md:py-12">
                   <header id="post-header" class="mb-12 not-prose">
                     <h1 class="text-3xl md:text-4xl lg:text-blog-title font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                       {p().title}

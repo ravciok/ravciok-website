@@ -13,5 +13,5 @@ export function ucareCrop(uuid: string, width: number, height: number, align: st
 }
 
 export function ucareResize(uuid: string, width: number, height: number): string {
-  return ops(uuid, `smart_resize/${width}x${height}/center`);
+  return ops(uuid, `smart_resize/${width}x${height}`);
 }

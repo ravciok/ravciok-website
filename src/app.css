@@ -36,16 +36,61 @@ html {
   color: var(--color-secondary);
 }
 
+.prose blockquote {
+  border-inline-start-color: var(--color-accent);
+  background-color: color-mix(in srgb, var(--color-accent) 25%, transparent);
+  padding-block: 0.5em;
+  padding-inline-end: 1em;
+  border-start-end-radius: 0.5rem;
+  border-end-end-radius: 0.5rem;
+}
+
+[data-theme="dracula"] .prose {
+  color: rgb(255 255 255 / 0.7);
+}
+
 .prose table th:first-child,
 .prose table td:first-child {
   white-space: nowrap;
 }
 
+/* inline code: never split identifiers across line wraps */
+.prose :not(pre) > code {
+  white-space: nowrap;
+  border-color: transparent;
+  background-color: color-mix(in srgb, currentColor 10%, transparent);
+}
+
+.prose a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in srgb, currentColor 50%, transparent);
+}
+
+.prose a:hover {
+  text-decoration-color: currentColor;
+}
+
+.prose a.external::after {
+  content: " ↗";
+  font-size: 0.75em;
+  vertical-align: super;
+  line-height: 1;
+}
+
+.prose a.external:has(img)::after { content: none; }
+
 /* shiki dual-theme: default = light. dark = swap to dark CSS variables. */
-[data-theme="dracula"] .shiki,
-[data-theme="dracula"] .shiki span {
+[data-theme="dracula"] .shiki {
   color: var(--shiki-dark) !important;
   background-color: var(--shiki-dark-bg) !important;
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
+}
+[data-theme="dracula"] .shiki span {
+  color: var(--shiki-dark) !important;
   font-style: var(--shiki-dark-font-style) !important;
   font-weight: var(--shiki-dark-font-weight) !important;
   text-decoration: var(--shiki-dark-text-decoration) !important;
@@ -72,6 +117,11 @@ html {
   overflow-x: auto;
   font-size: 0.9em;
   line-height: 1.6;
+}
+
+/* ASCII diagrams: tight line-height so box-drawing chars connect across rows */
+.prose .code-block[data-lang="text"] pre {
+  line-height: 1.15;
 }
 
 .prose .code-block .code-lang {
@@ -160,6 +210,39 @@ html {
 }
 .prose .code-block:not([data-lang="text"]) pre.shiki .line:last-child:empty::before {
   content: none;
+}
+
+.prose .code-block[data-lang="diff"] pre.shiki .line.line-add {
+  background-color: rgb(46 160 67 / 0.15);
+  border-radius: calc(var(--code-radius) - 0.125rem);
+}
+.prose .code-block[data-lang="diff"] pre.shiki .line.line-remove {
+  background-color: rgb(248 81 73 / 0.15);
+  border-radius: calc(var(--code-radius) - 0.125rem);
+}
+[data-theme="dracula"] .prose .code-block[data-lang="diff"] pre.shiki .line.line-add {
+  background-color: rgb(46 160 67 / 0.25);
+}
+[data-theme="dracula"] .prose .code-block[data-lang="diff"] pre.shiki .line.line-remove {
+  background-color: rgb(248 81 73 / 0.25);
+}
+
+/* contiguous run: flatten internal corners so consecutive lines join */
+.prose .code-block[data-lang="diff"] pre.shiki .line.line-add + .line.line-add {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.prose .code-block[data-lang="diff"] pre.shiki .line.line-add:has(+ .line.line-add) {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.prose .code-block[data-lang="diff"] pre.shiki .line.line-remove + .line.line-remove {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.prose .code-block[data-lang="diff"] pre.shiki .line.line-remove:has(+ .line.line-remove) {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 @media (min-width: 768px) {
