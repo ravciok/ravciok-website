@@ -183,30 +183,38 @@ The smart and dumb intros showed `PostDetailFeat` loading and listing comments, 
 
 The wiring touches every layer. A state holder owns truth, HTTP, and optimistic mutation. Two dumb children render — the row from [§Dumb](#dumb-components) plus a new editor primitive — and the smart parent grows handlers for `add`, `edit`, `remove`.
 
-```text
-┌────────────────────────────────┐                            ┌────────────────────────────────┐
-│         PostDetailFeat         │                            │         CommentsState          │
-├────────────────────────────────┤  list()/loading()/error()  ├────────────────────────────────┤
-│  provides CommentsState        │◀───────────────────────────│  signal<Comment[]>             │
-│  injects PostState, CurrentUser│───────────────────────────▶│  HTTP + optimistic mutation    │
-│  local: editingId signal       │    add/edit/remove(id)     └────────────────────────────────┘
-└────────────────────────────────┘
-   │▲                           │▲
-   ││                           ││
-   ││ [content]                 ││ [comment] [canEdit] [canDelete]
-   ││ (submitted) (cancelled)   ││ (edited) (deleted)
-   ││                           ││
-   ▼│                           ▼│
-┌────────────────────────────┐ ┌────────────────────────────────┐
-│      CommentEditorUi       │ │           CommentUi            │
-├────────────────────────────┤ ├────────────────────────────────┤
-│ input<string> content      │ │  input<Comment> comment        │
-│ output<string> submitted   │ │  input<boolean> canEdit        │
-│ output<void> cancelled     │ │  input<boolean> canDelete      │
-│ local: draft               │ │  output<void> edited           │
-└────────────────────────────┘ │  output<void> deleted          │
-                               │  pure display, no local state  │
-                               └────────────────────────────────┘
+```mermaid
+flowchart TB
+  accTitle: PostDetailFeat wiring with CommentsState and dumb children
+  accDescr: Smart parent PostDetailFeat provides CommentsState, injects PostState and CurrentUser, owns an editingId signal. It calls add/edit/remove on CommentsState and reads list, loading, error signals. It binds inputs and outputs of CommentEditorUi and CommentUi.
+
+  subgraph state
+    direction LR
+    CommentsState["<b>CommentsState</b><div style='text-align:left;white-space:nowrap'>━━━━━━━━━━━━━<br/>signal&lt;Comment[]&gt;<br/>HTTP + optimistic mutation</div>"]
+  end
+  
+  subgraph feat
+    direction LR
+    PostDetailFeat["<b>PostDetailFeat</b><div style='text-align:left;white-space:nowrap'>━━━━━━━━━━━━━<br/>provides CommentsState<br/>injects PostState, CurrentUser<br/>local editingId</div>"]
+  end
+
+  subgraph dumb
+    direction LR
+    CommentEditorUi["<b>CommentEditorUi</b><div style='text-align:left;white-space:nowrap'>━━━━━━━━━━━━━<br/>input&lt;string&gt; content<br/>output&lt;string&gt; submitted<br/>output&lt;void&gt; cancelled<br/>local draft</div>"]
+    CommentUi["<b>CommentUi</b><div style='text-align:left;white-space:nowrap'>━━━━━━━━━━━━━<br/>input&lt;Comment&gt; comment<br/>input&lt;boolean&gt; canEdit<br/>input&lt;boolean&gt; canDelete<br/>output&lt;void&gt; edited<br/>output&lt;void&gt; deleted<br/>no local state</div>"]
+  end
+
+  PostDetailFeat -->|"add(id)<br/>edit(id)<br/>remove(id)"| CommentsState
+  CommentsState -->|"list()<br/>loading()<br/>error()"| PostDetailFeat
+  PostDetailFeat -->|"[content]"| CommentEditorUi
+  CommentEditorUi -->|"(submitted)<br/>(cancelled)"| PostDetailFeat
+  PostDetailFeat -->|"[comment]<br/>[canEdit]<br/>[canDelete]"| CommentUi
+  CommentUi -->|"(edited)<br/>(deleted)"| PostDetailFeat
+
+  classDef invisible fill:transparent,stroke:none
+  class state invisible
+  class feat invisible
+  class dumb invisible
 ```
 
 The smart parent owns the edit-mode signal and swaps `<app-comment-editor-ui>` for `<app-comment-ui>` on the row being edited. One editor primitive, one architectural level, no duplication.
@@ -429,42 +437,47 @@ The worked example assumes one smart consumer wires the comment thread. More tha
 
 A smart shell wires the state, the dumb children, and the identity check once. It accepts a `[subjectId]` input so each consumer points it at the right thread. `CommentsState` provider moves inside the shell.
 
-```text
-┌────────────────────────────────┐ ┌────────────────────────────────┐
-│         PostDetailFeat         │ │        PhotoDetailFeat         │
-├────────────────────────────────┤ ├────────────────────────────────┤
-│  injects PostState             │ │  injects PhotoState            │
-│  renders CommentThreadFeat     │ │  renders CommentThreadFeat     │
-└───────────────┬────────────────┘ └───────────────┬────────────────┘
-                │                                  │
-                │ [subjectId]                      │ [subjectId]
-                │              ┌───────────────────┘
-                │              │
-                │              │
-                ▼              ▼
-┌────────────────────────────────┐                            ┌────────────────────────────────┐
-│       CommentThreadFeat        │                            │         CommentsState          │
-├────────────────────────────────┤  list()/loading()/error()  ├────────────────────────────────┤
-│  provides CommentsState        │◀───────────────────────────│  signal<Comment[]>             │
-│  injects CurrentUser           │───────────────────────────▶│  HTTP + optimistic mutation    │
-│  local: editingId signal       │    add/edit/remove(id)     └────────────────────────────────┘
-└────────────────────────────────┘
-   │▲                           │▲
-   ││                           ││
-   ││ [content]                 ││ [comment] [canEdit] [canDelete]
-   ││ (submitted) (cancelled)   ││ (edited) (deleted)
-   ││                           ││
-   ▼│                           ▼│
-┌────────────────────────────┐ ┌────────────────────────────────┐
-│      CommentEditorUi       │ │           CommentUi            │
-├────────────────────────────┤ ├────────────────────────────────┤
-│ input<string> content      │ │  input<Comment> comment        │
-│ output<string> submitted   │ │  input<boolean> canEdit        │
-│ output<void> cancelled     │ │  input<boolean> canDelete      │
-│ local: draft               │ │  output<void> edited           │
-└────────────────────────────┘ │  output<void> deleted          │
-                               │  pure display, no local state  │
-                               └────────────────────────────────┘
+```mermaid
+flowchart TB
+  accTitle: CommentThreadFeat reused by two consumer features
+  accDescr: PostDetailFeat and PhotoDetailFeat both render CommentThreadFeat with their own subjectId. CommentThreadFeat provides CommentsState, injects CurrentUser, owns editingId signal. It wires the same dumb children CommentEditorUi and CommentUi as the worked example.
+
+  subgraph consumers
+    direction LR
+    PostDetailFeat["<b>PostDetailFeat</b><div style='text-align:left;white-space:nowrap'>━━━━━━━━━━━━━<br/>injects PostState</div>"]
+    PhotoDetailFeat["<b>PhotoDetailFeat</b><div style='text-align:left;white-space:nowrap'>━━━━━━━━━━━━━<br/>injects PhotoState</div>"]
+  end
+  
+  subgraph state
+    direction LR
+    CommentsState["<b>CommentsState</b><div style='text-align:left;white-space:nowrap'>━━━━━━━━━━━━━<br/>signal&lt;Comment[]&gt;<br/>HTTP + optimistic mutation</div>"]
+  end
+  
+  subgraph feat
+    direction LR
+    CommentThreadFeat["<b>CommentThreadFeat</b><div style='text-align:left;white-space:nowrap'>━━━━━━━━━━━━━<br/>provides CommentsState<br/>injects CurrentUser<br/>local editingId</div>"]
+  end
+
+  subgraph dumb
+    direction LR
+    CommentEditorUi["<b>CommentEditorUi</b><div style='text-align:left;white-space:nowrap'>━━━━━━━━━━━━━<br/>input&lt;string&gt; content<br/>output&lt;string&gt; submitted<br/>output&lt;void&gt; cancelled<br/>local draft</div>"]
+    CommentUi["<b>CommentUi</b><div style='text-align:left;white-space:nowrap'>━━━━━━━━━━━━━<br/>input&lt;Comment&gt; comment<br/>input&lt;boolean&gt; canEdit<br/>input&lt;boolean&gt; canDelete<br/>output&lt;void&gt; edited<br/>output&lt;void&gt; deleted<br/>no local state</div>"]
+  end
+
+  PostDetailFeat -->|"[subjectId]"| CommentThreadFeat
+  PhotoDetailFeat -->|"[subjectId]"| CommentThreadFeat
+  CommentThreadFeat -->|"add(id)<br/>edit(id)<br/>remove(id)"| CommentsState
+  CommentsState -->|"list()<br/>loading()<br/>error()"| CommentThreadFeat
+  CommentThreadFeat -->|"[content]"| CommentEditorUi
+  CommentEditorUi -->|"(submitted)<br/>(cancelled)"| CommentThreadFeat
+  CommentThreadFeat -->|"[comment]<br/>[canEdit]<br/>[canDelete]"| CommentUi
+  CommentUi -->|"(edited)<br/>(deleted)"| CommentThreadFeat
+
+  classDef invisible fill:transparent,stroke:none
+  class consumers invisible
+  class feat invisible
+  class state invisible
+  class dumb invisible
 ```
 
 State + wiring slide one level down. Two consumers, one identical host line — `<app-comment-thread-feat [subjectId]="...">`. Each consumer gets its own `CommentThreadFeat` instance and its own `CommentsState`, sharing only through the HTTP service. `app-comment-ui` and `app-comment-editor-ui` stay primitives — pure, design-system-safe. `app-comment-thread-feat` is the wired version — drop-in for app code that has a `subjectId` to bind.

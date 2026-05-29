@@ -96,6 +96,21 @@ html {
   text-decoration: var(--shiki-dark-text-decoration) !important;
 }
 
+/* mermaid diagrams: dual-SVG with CSS theme swap (no JS) */
+.prose .mermaid-diagram {
+  margin: 1.5em 0;
+  display: flex;
+  justify-content: center;
+}
+.prose .mermaid-diagram > span { display: contents; }
+.prose .mermaid-diagram svg {
+  max-width: 100%;
+  height: auto;
+}
+.prose .mermaid-diagram .mermaid-dark { display: none; }
+[data-theme="dracula"] .prose .mermaid-diagram .mermaid-light { display: none; }
+[data-theme="dracula"] .prose .mermaid-diagram .mermaid-dark { display: contents; }
+
 /* prose code blocks: container styling + language badge + file badge */
 .prose .code-block {
   --code-radius: 0.5rem;

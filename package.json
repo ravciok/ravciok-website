@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit",
     "deploy": "pnpm run build && wrangler deploy",
     "preview": "pnpm run build && wrangler dev",
-    "cf-typegen": "wrangler types"
+    "cf-typegen": "wrangler types",
+    "render-mermaid": "tsc -p scripts && node .scripts-dist/render-mermaid.js"
   },
   "dependencies": {
     "@giscus/solid": "^3.1.0",
@@ -28,6 +29,8 @@
     "@tailwindcss/vite": "^4.2.4",
     "@types/node": "^25.6.0",
     "daisyui": "^5.5.19",
+    "mermaid-isomorphic": "^3.1.0",
+    "playwright": "^1.60.0",
     "shiki": "^4.0.2",
     "tailwindcss": "^4.2.4",
     "typescript": "^5.7.0",

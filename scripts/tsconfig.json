@@ -6,5 +6,5 @@
     "jsx": "preserve",
     "types": ["node"]
   },
-  "include": ["write-headers.ts", "write-rss.ts", "write-sitemap.ts"]
+  "include": ["write-headers.ts", "write-rss.ts", "write-sitemap.ts", "render-mermaid.ts"]
 }

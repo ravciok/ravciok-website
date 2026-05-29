@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
 import matter from "gray-matter";
@@ -10,6 +11,7 @@ import {
 } from "shiki";
 
 const POSTS_DIR = join(process.cwd(), "src/content/posts");
+const DIAGRAMS_DIR = join(process.cwd(), "src/content/diagrams");
 
 const HIGHLIGHT_LANGS: BundledLanguage[] = [
   "ts",
@@ -96,6 +98,64 @@ async function highlightCode(text: string, lang: string): Promise<string> {
     ? `<span class="code-file" title="${escapeHtml(filename)}">${escapeHtml(filename)}</span>`
     : "";
   return `<div class="code-block" data-lang="${renderLang}">${langBadge}${fileBadge}${html}</div>`;
+}
+
+function sha1Short(s: string): string {
+  return createHash("sha1").update(s).digest("hex").slice(0, 12);
+}
+
+function extractSvgHash(svg: string): string | null {
+  const m = svg.match(/<!-- src-hash: ([a-f0-9]+) -->/);
+  return m ? m[1] : null;
+}
+
+function prefixSvgIds(svg: string, prefix: string): string {
+  const ids = new Set<string>();
+  const idRe = /id="([^"]+)"/g;
+  let m: RegExpExecArray | null;
+  while ((m = idRe.exec(svg)) !== null) ids.add(m[1]);
+  let out = svg;
+  for (const id of ids) {
+    const esc = id.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    out = out.replace(new RegExp(`(["'])${esc}\\1`, "g"), `$1${prefix}${id}$1`);
+    out = out.replace(new RegExp(`url\\(#${esc}\\)`, "g"), `url(#${prefix}${id})`);
+    out = out.replace(new RegExp(`href="#${esc}"`, "g"), `href="#${prefix}${id}"`);
+    out = out.replace(new RegExp(`#${esc}([\\s.,>{:])`, "g"), `#${prefix}${id}$1`);
+  }
+  return out;
+}
+
+async function renderMermaid(slug: string, index: number, source: string): Promise<string> {
+  const expected = sha1Short(source);
+  const themes = ["light", "dark"] as const;
+  const svgs = await Promise.all(
+    themes.map(async (theme) => {
+      const path = join(DIAGRAMS_DIR, `${slug}-${index}-${theme}.svg`);
+      let svg: string;
+      try {
+        svg = await readFile(path, "utf8");
+      } catch {
+        throw new Error(
+          `diagram ${slug}#${index} (${theme}) missing — run \`pnpm render-mermaid\``,
+        );
+      }
+      const found = extractSvgHash(svg);
+      if (found !== expected) {
+        throw new Error(
+          `diagram ${slug}#${index} (${theme}) is stale (hash ${found ?? "?"}, expected ${expected}) — run \`pnpm render-mermaid\``,
+        );
+      }
+      return svg;
+    }),
+  );
+  const [light, dark] = svgs;
+  const darkPrefixed = prefixSvgIds(dark, "dark-");
+  return (
+    `<figure class="mermaid-diagram not-prose">` +
+    `<span class="mermaid-light">${light}</span>` +
+    `<span class="mermaid-dark" aria-hidden="true">${darkPrefixed}</span>` +
+    `</figure>`
+  );
 }
 
 const INTERNAL_HOST = /^https?:\/\/(?:[^/]+\.)?ravciok\.dev(?:\/|$)/i;
@@ -196,14 +256,25 @@ function buildToc(tokens: Token[]): TocEntry[] {
   return toc;
 }
 
-async function highlightAllCode(tokens: Token[]): Promise<void> {
+async function processCodeBlocks(
+  tokens: Token[],
+  slug: string,
+  mermaidCounter: { current: number },
+): Promise<void> {
   for (const t of tokens) {
     if (t.type === "code") {
       const c = t as Tokens.Code & { highlighted?: string };
-      c.highlighted = await highlightCode(c.text, c.lang ?? "");
+      const lang = (c.lang ?? "").trim().toLowerCase();
+      if (lang === "mermaid") {
+        const idx = mermaidCounter.current;
+        mermaidCounter.current += 1;
+        c.highlighted = await renderMermaid(slug, idx, c.text);
+      } else {
+        c.highlighted = await highlightCode(c.text, c.lang ?? "");
+      }
     }
     const nested = (t as { tokens?: Token[] }).tokens;
-    if (Array.isArray(nested)) await highlightAllCode(nested);
+    if (Array.isArray(nested)) await processCodeBlocks(nested, slug, mermaidCounter);
   }
 }
 
@@ -256,7 +327,7 @@ export async function getPost(slug: string): Promise<Post | null> {
     const body = stripLeadingH1(content, title);
     const tokens = marked.lexer(body);
     const toc = buildToc(tokens);
-    await highlightAllCode(tokens);
+    await processCodeBlocks(tokens, slug, { current: 0 });
     const html = marked.parser(tokens);
     const updated =
       data.updated instanceof Date
