@@ -23,7 +23,7 @@ const LD_JSON = JSON.stringify({
       name: SITE.author,
       url: SITE.url,
       image: ucareSquare(SITE.heroId, 512),
-      jobTitle: "Principal Frontend Engineer",
+      jobTitle: "Staff Frontend Engineer",
       description: "Writes about frontend architecture, performance, and security across modern frameworks.",
       sameAs: SITE.profiles,
     },
