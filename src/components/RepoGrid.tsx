@@ -19,7 +19,7 @@ export function RepoGrid(props: { repos: GitHubRepo[]; limit?: number }) {
                 />
                 <div class="card-body pointer-events-none">
                   <div class="flex items-center">
-                    <h3 class="card-title text-lg break-words transition-colors group-hover:text-secondary/80">
+                    <h3 class="card-title text-lg leading-snug break-words transition-colors group-hover:text-secondary/80">
                       {repo.name}
                     </h3>
                     <Show when={repo.homepage}>

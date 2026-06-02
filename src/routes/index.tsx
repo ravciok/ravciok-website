@@ -56,9 +56,9 @@ export default function Home() {
 
               <ProfileReadme html={d().gh.profileReadmeHtml} />
 
-              <RepoGrid repos={d().gh.repos} limit={4} />
-
               <BlogList posts={d().posts} />
+
+              <RepoGrid repos={d().gh.repos} limit={4} />
             </>
           )}
         </Show>
