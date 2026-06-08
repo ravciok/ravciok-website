@@ -10,7 +10,7 @@ const csp = [
   `style-src 'self' 'unsafe-inline'`,
   `img-src 'self' data: https://5qcsm3rhzn.ucarecd.net`,
   `font-src 'self' data:`,
-  `connect-src 'self' https://cloud.umami.is https://api-gateway.umami.dev`,
+  `connect-src 'self' https://cloud.umami.is https://api-gateway.umami.dev https://gateway.umami.is`,
   `frame-src https://giscus.app`,
   `frame-ancestors 'none'`,
   `form-action 'self'`,
